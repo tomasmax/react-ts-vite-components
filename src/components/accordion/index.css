@@ -1,0 +1,38 @@
+/* Accordion container */
+.accordion {
+  border: 1px solid #7d7777;
+  border-radius: 4px;
+}
+
+/* Accordion item */
+.accordion-item {
+  border-bottom: 1px solid #7d7777;
+}
+
+/* Accordion item title */
+.accordion-title {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #4e4a4a;
+  transition: background-color 0.3s;
+}
+
+.accordion-title.active {
+  background-color: #050505;
+}
+
+/* Accordion item content */
+.accordion-content {
+  padding: 10px;
+  display: none;
+  background-color: #828181;
+}
+
+.accordion-title.active + .accordion-content {
+  display: block;
+}
+
+/* Hover effect on accordion title */
+.accordion-title:hover {
+  background-color: #a09f9f;
+}
