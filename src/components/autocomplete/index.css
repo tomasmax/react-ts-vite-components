@@ -1,0 +1,12 @@
+.suggestions {
+  list-style-type: none;
+}
+
+.active-suggestion {
+  background-color: darkgray;
+}
+
+.highlighted-char {
+  background-color: rgb(51, 51, 49);
+  font-weight: bold;
+}
