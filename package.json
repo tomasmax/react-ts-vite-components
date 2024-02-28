@@ -8,7 +8,7 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "test:watch": "jest --watchAll",
+    "test:watch": "jest --watchAll --runInBand --forceExit --detectOpenHandles",
     "test:ci": "jest",
     "test:coverage": "jest --silent --watchAll=false --coverage",
     "typecheck": "tsc --noEmit"

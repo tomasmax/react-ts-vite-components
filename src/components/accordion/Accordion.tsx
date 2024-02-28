@@ -11,9 +11,9 @@ interface AccordionProps {
 }
 
 const Accordion = ({ items }: AccordionProps) => {
-  const [activeIndex, setActiveindex] = useState(null);
+  const [activeIndex, setActiveindex] = useState<number | null>(null);
 
-  const handleClick = (index) => {
+  const handleClick = (index: number) => {
     if (activeIndex === index) {
       // Hide current active content
       return setActiveindex(null);

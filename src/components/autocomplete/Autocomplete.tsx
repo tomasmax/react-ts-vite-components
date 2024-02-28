@@ -14,10 +14,10 @@ const Autocomplete = ({
 }: AutocompleteProps): ReactElement => {
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
-  const [matchedChars, setMatchedChars] = useState<string[] | null>([]);
+  const [matchedChars, setMatchedChars] = useState<(string | null)[]>([]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const matchingChars = (value: string, suggestions) =>
+  const matchingChars = (value: string) =>
     value.split("").map((char, index) => {
       const optionChars =
         filteredSuggestions[0] && filteredSuggestions[0].split("");
@@ -27,7 +27,7 @@ const Autocomplete = ({
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
     setInputValue(inputValue);
-    const matchedChars = matchingChars(inputValue, suggestions);
+    const matchedChars = matchingChars(inputValue);
     const newFilteredSuggestions = suggestions.filter((suggestion) =>
       suggestion.toLowerCase().includes(inputValue.toLowerCase())
     );
@@ -36,8 +36,9 @@ const Autocomplete = ({
     setIsOpen(true);
   };
 
-  const handleClickSuggestion = (suggestion) => {
+  const handleClickSuggestion = (suggestion: string) => {
     setInputValue(suggestion);
+    onSelect(suggestion);
   };
 
   const handleBlur = () => {

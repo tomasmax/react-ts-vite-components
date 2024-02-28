@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const API = "https://v6.exchangerate-api.com/v6/";
-const API_KEY = "your api key";
+const API_KEY = "04ad069cff5e33f6591082a7";
 
 const CurrencyExchange = () => {
   const [sourceAmount, setSourceAmount] = useState(0);
