@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 // Create a React component in TypeScript that displays a list of transactions for a given account. Each transaction should display the date, the other party, and the amount. The transactions should be sorted by date in descending order.
 
@@ -13,6 +13,7 @@ type Props = {
   transactions: Transaction[];
   pageSize: number;
 };
+
 const TransactionList = ({ transactions, pageSize = 2 }: Props) => {
   const [dateFrom, setDateFrom] = useState<Date | null>(null);
   const [dateTo, setDateTo] = useState<Date | null>(null);
@@ -38,23 +39,31 @@ const TransactionList = ({ transactions, pageSize = 2 }: Props) => {
     }
   };
 
-  const filteredTransactions = currentTransactions.filter((transaction) => {
-    const { date, amount } = transaction;
-    if (dateFrom && date < dateFrom) return false;
-    if (dateTo && date > dateTo) return false;
-    if (
-      otherParty &&
-      transaction.otherParty.toLocaleLowerCase() !==
-        otherParty.toLocaleLowerCase()
-    )
-      return false;
-    if (minAmount && amount < minAmount) return false;
-    if (maxAmount && amount > maxAmount) return false;
-    return true;
-  });
+  const filteredTransactions = useMemo(
+    () =>
+      currentTransactions.filter((transaction) => {
+        const { date, amount } = transaction;
+        if (dateFrom && date < dateFrom) return false;
+        if (dateTo && date > dateTo) return false;
+        if (
+          otherParty &&
+          transaction.otherParty.toLocaleLowerCase() !==
+            otherParty.toLocaleLowerCase()
+        )
+          return false;
+        if (minAmount && amount < minAmount) return false;
+        if (maxAmount && amount > maxAmount) return false;
+        return true;
+      }),
+    [currentTransactions, dateFrom, dateTo, otherParty, minAmount, maxAmount]
+  );
 
-  const sortedTransactions = [...filteredTransactions].sort(
-    (a, b) => b.date.getTime() - a.date.getTime()
+  const sortedTransactions = useMemo(
+    () =>
+      [...filteredTransactions].sort(
+        (a, b) => b.date.getTime() - a.date.getTime()
+      ),
+    [filteredTransactions]
   );
 
   return (
@@ -93,7 +102,11 @@ const TransactionList = ({ transactions, pageSize = 2 }: Props) => {
       </label>
       <ul>
         {sortedTransactions.map((transaction, index) => (
-          <li style={{ listStyleType: "none" }} key={`transaction-${index}`}>
+          <li
+            style={{ listStyleType: "none" }}
+            key={`transaction-${index}`}
+            aria-disabled={currentPage === 1}
+          >
             {
               <>
                 <p>Date: {transaction.date.toLocaleDateString()}</p>
@@ -110,7 +123,11 @@ const TransactionList = ({ transactions, pageSize = 2 }: Props) => {
       <span>
         Page {currentPage} of {totalPages}
       </span>
-      <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+      <button
+        onClick={handleNextPage}
+        disabled={currentPage === totalPages}
+        aria-disabled={currentPage === 1}
+      >
         Next
       </button>
     </div>
